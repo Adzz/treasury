@@ -11,6 +11,8 @@ defmodule TreasuryWeb.Pages.BuyLive do
   end
 
   @impl true
+  # We could have the optional stock symbol as a param and if it's there prefill the
+  # form or data with prices... Probably want a refresh prices BTN or something too...
   def mount(_params, _session, socket) do
     default_assigns = %{}
     {:ok, assign(socket, default_assigns)}
