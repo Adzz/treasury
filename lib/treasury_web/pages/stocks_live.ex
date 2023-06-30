@@ -23,12 +23,13 @@ defmodule TreasuryWeb.Pages.StocksLive do
       <h1 class="text-xl font-semibold mb-4">View Stocks</h1>
       <.form class="mb-6" for={@stock_form} phx-blur="select_stock" phx-submit="select_stock">
         <div class="flex flex-col items-center">
-          <div>
+          <div class="flex flex-col">
             <.label class="self-start">Stock Symbol</.label>
             <input
               placeholder="type to filter..."
               name="stock_symbol"
               list="stock_symbols"
+              required={true}
               class={[
                 "text-slate-50 mt-1 block py-2 px-3 border focus:border-gray-300 ",
                 "bg-slate-900 rounded-md shadow-sm focus:outline-none ",
@@ -40,12 +41,13 @@ defmodule TreasuryWeb.Pages.StocksLive do
                 <option value={symbol} />
               <% end %>
             </datalist>
+            <.button class="mt-4 self-end">Submit</.button>
           </div>
         </div>
       </.form>
 
       <%= if @stock_info do %>
-        <div class="mx-auto xl:max-w-xl lg:max-w-lg md:max-w-md max-w-sm ">
+        <div class="mx-auto max-w-sm flex flex-col">
           <h2 class="font-semibold mb-2 text-center"><%= @stock_info["symbol"] %></h2>
           <h3 class="font-semibold mb-2"><%= @stock_info["name"] %></h3>
 
@@ -58,15 +60,21 @@ defmodule TreasuryWeb.Pages.StocksLive do
             </thead>
             <tr>
               <td>Price</td>
-              <td class="font-semibold pl-4">£<%= @stock_info["price"] %></td>
+              <td class="font-semibold">£<%= @stock_info["price"] %></td>
             </tr>
             <tr>
               <td class="">Expense Ratio</td>
-              <td class="font-semibold text-center pl-4">
+              <td class="font-semibold">
                 <%= @stock_info["expense_ratio_basis_points"] %> (basis points)
               </td>
             </tr>
           </table>
+          <div class="mt-2">
+            <.icon name="hero-arrow-top-right-on-square w-5" />
+            <.link navigate={~p"/buy"} class="underline font-semibold">
+              Buy <%= @stock_info["symbol"] %> Stocks
+            </.link>
+          </div>
         </div>
       <% end %>
     </div>
@@ -95,7 +103,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
             stock_info: info
           }
 
-          {:noreply, assign(socket, new_assigns) |> put_flash(:info, "Yay")}
+          {:noreply, assign(socket, new_assigns)}
 
         {:error, message} ->
           {:noreply, socket |> put_flash(:error, message)}

@@ -225,8 +225,11 @@ defmodule TreasuryWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-lg py-1 px-2",
+        "text-sm font-semibold leading-6 disabled:opacity-75 ",
+        "enabled:hover:outline-emerald-200/80 outline-emerald-200 ",
+        "enabled:active:outline-emerald-200/80 text-emerald-100 enabled:active:text-emerald-100/80",
+        " outline outline-[1.5px]",
         @class
       ]}
       {@rest}
