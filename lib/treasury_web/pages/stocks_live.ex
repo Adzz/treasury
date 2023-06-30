@@ -21,7 +21,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
     ~H"""
     <div class="ml-4">
       <h1 class="text-xl font-semibold mb-4">View Stocks</h1>
-      <.form class="mb-4" for={@stock_form} phx-blur="select_stock" phx-submit="select_stock">
+      <.form class="mb-6" for={@stock_form} phx-blur="select_stock" phx-submit="select_stock">
         <div class="flex flex-col items-center">
           <div>
             <.label class="self-start">Stock Symbol</.label>
@@ -45,8 +45,8 @@ defmodule TreasuryWeb.Pages.StocksLive do
       </.form>
 
       <%= if @stock_info do %>
-        <div class="mx-auto xl:max-w-xl lg:max-w-lg md:max-w-md max-w-sm mt-2">
-          <h2 class="font-semibold mb-2"><%= @stock_info["symbol"] %></h2>
+        <div class="mx-auto xl:max-w-xl lg:max-w-lg md:max-w-md max-w-sm ">
+          <h2 class="font-semibold mb-2 text-center"><%= @stock_info["symbol"] %></h2>
           <h3 class="font-semibold mb-2"><%= @stock_info["name"] %></h3>
 
           <table class="table-fixed">
@@ -78,12 +78,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
     default_assigns = %{
       symbols: ["VTI"],
       stock_form: Phoenix.Component.to_form(%{}, as: :project_selector),
-      stock_info: %{
-        "expense_ratio_basis_points" => 3,
-        "name" => "Vanguard Group, Inc. - Vanguard Total Stock Market ETF",
-        "price" => 219.83,
-        "symbol" => "VTI"
-      }
+      stock_info: nil
     }
 
     {:ok, assign(socket, default_assigns)}

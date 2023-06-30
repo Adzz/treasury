@@ -2,7 +2,6 @@ defmodule Treasury.Http do
   @moduledoc """
   A wrapper around the given HTTP library we are currently using.
   """
-  @http Application.compile_env!(:treasury, :http_mod)
   @behaviour Treasury.HttpBehaviour
 
   @impl true
@@ -10,7 +9,7 @@ defmodule Treasury.Http do
     options = Map.get(args, :options, [])
     headers = Map.get(args, :headers, [])
 
-    @http.get(%{url: url, headers: headers, options: options})
+    HTTPoison.get(url, headers, options)
     |> process_response()
   end
 

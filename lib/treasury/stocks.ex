@@ -3,6 +3,7 @@ defmodule Treasury.Stocks do
   Functions that interact with stocks.
   """
   @root_url "https://treasury.app/api/v1/hiring/symbols/"
+  @http Application.compile_env!(:treasury, :http_mod)
 
   @doc """
   Queries an API for information on a stock symbol.
@@ -12,7 +13,7 @@ defmodule Treasury.Stocks do
     headers = [{"Authorization", "Bearer cL7FTRzqSfY8CpZXYJ53q2rpV4W5ybvddqObYiODJzc"}]
 
     with {:ok, %{body: body, status_code: 200}} <-
-           Treasury.Http.get(%{url: @root_url <> symbol, headers: headers}) do
+           @http.get(%{url: @root_url <> symbol, headers: headers}) do
       Jason.decode(body)
     else
       {:ok, %{status_code: code}} -> {:error, "unexpected status code #{code}"}
