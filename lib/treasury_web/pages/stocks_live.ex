@@ -2,20 +2,6 @@ defmodule TreasuryWeb.Pages.StocksLive do
   use TreasuryWeb, :live_view
   require Logger
 
-  defmodule SymbolForm do
-    use Ecto.Schema
-
-    embedded_schema do
-      field(:symbol, :string)
-    end
-
-    def changeset(data) do
-      %__MODULE__{}
-      |> Ecto.Changeset.cast(data, [:symbol])
-      |> Ecto.Changeset.validate_required([:symbol])
-    end
-  end
-
   @impl true
   def render(assigns) do
     ~H"""
@@ -47,35 +33,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
       </.form>
 
       <%= if @stock_info do %>
-        <div class="mx-auto max-w-sm flex flex-col">
-          <h2 class="font-semibold mb-2 text-center"><%= @stock_info["symbol"] %></h2>
-          <h3 class="font-semibold mb-2"><%= @stock_info["name"] %></h3>
-
-          <table class="table-fixed">
-            <thead class="">
-              <tr>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tr>
-              <td>Price</td>
-              <td class="font-semibold">£<%= @stock_info["price"] %></td>
-            </tr>
-            <tr>
-              <td class="">Expense Ratio</td>
-              <td class="font-semibold">
-                <%= @stock_info["expense_ratio_basis_points"] %> (basis points)
-              </td>
-            </tr>
-          </table>
-          <div class="mt-2">
-            <.icon name="hero-arrow-top-right-on-square w-5" />
-            <.link navigate={~p"/buy"} class="underline font-semibold">
-              Buy <%= @stock_info["symbol"] %> Stocks
-            </.link>
-          </div>
-        </div>
+        <TreasuryWeb.Components.StockInfo.info stock_info={@stock_info} />
       <% end %>
     </div>
     """
@@ -85,7 +43,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
   def mount(_params, _session, socket) do
     default_assigns = %{
       symbols: ["VTI"],
-      stock_form: Phoenix.Component.to_form(%{}, as: :project_selector),
+      stock_form: Phoenix.Component.to_form(%{}, as: :select_stock),
       stock_info: nil
     }
 

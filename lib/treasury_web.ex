@@ -66,6 +66,17 @@ defmodule TreasuryWeb do
     end
   end
 
+  def function_component do
+    quote do
+      use Phoenix.Component
+      import Phoenix.HTML
+      alias Phoenix.LiveView.JS
+      alias TreasuryWeb.CoreComponents
+      # Routes generation with the ~p sigil
+      unquote(verified_routes())
+    end
+  end
+
   def html do
     quote do
       use Phoenix.Component
