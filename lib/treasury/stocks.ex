@@ -31,4 +31,11 @@ defmodule Treasury.Stocks do
   def valid_stock_symbols() do
     ["VTI"]
   end
+
+  @doc """
+  Actions a purchase order to buy dollar_amount worth of stock in USD.
+  """
+  def purchase_stock(_stock_symbol, _dollar_amount) do
+    {:error, "Not implemented"}
+  end
 end

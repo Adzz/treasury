@@ -375,7 +375,7 @@ defmodule TreasuryWeb.CoreComponents do
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
           " block w-full rounded-lg border-slate-200 py-[7px] px-[11px]",
-          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
+          "text-slate-50 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-50 phx-no-feedback:focus:border-zinc-50 phx-no-feedback:focus:ring-zinc-50/5 ",
           @class
         ]}

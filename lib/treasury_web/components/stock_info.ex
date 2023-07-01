@@ -67,6 +67,7 @@ defmodule TreasuryWeb.Components.StockInfo do
             placeholder="type to filter..."
             name="stock_symbol"
             list="stock_symbols"
+            value={@stock_form[:symbol].value}
             required={true}
             class={[
               "text-slate-50 mt-1 block py-2 px-3 border focus:border-gray-300 ",
