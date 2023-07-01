@@ -73,7 +73,7 @@ defmodule TreasuryWeb do
       alias Phoenix.LiveView.JS
       alias TreasuryWeb.CoreComponents
       # Routes generation with the ~p sigil
-      unquote(verified_routes())
+      unquote(html_helpers())
     end
   end
 

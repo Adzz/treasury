@@ -7,31 +7,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
     ~H"""
     <div class="ml-4">
       <h1 class="text-xl font-semibold mb-4">View Stocks</h1>
-      <.form class="mb-6" for={@stock_form} phx-blur="select_stock" phx-submit="select_stock">
-        <div class="flex flex-col items-center">
-          <div class="flex flex-col">
-            <.label class="self-start">Stock Symbol</.label>
-            <input
-              placeholder="type to filter..."
-              name="stock_symbol"
-              list="stock_symbols"
-              required={true}
-              class={[
-                "text-slate-50 mt-1 block py-2 px-3 border focus:border-gray-300 ",
-                "bg-slate-900 rounded-md shadow-sm focus:outline-none ",
-                "focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
-              ]}
-            />
-            <datalist id="stock_symbols">
-              <%= for symbol <- @symbols do %>
-                <option value={symbol} />
-              <% end %>
-            </datalist>
-            <.button class="mt-4 self-end">Submit</.button>
-          </div>
-        </div>
-      </.form>
-
+      <TreasuryWeb.Components.StockInfo.stock_info_form symbols={@symbols} stock_form={@stock_form} />
       <%= if @stock_info do %>
         <TreasuryWeb.Components.StockInfo.info stock_info={@stock_info} />
       <% end %>
@@ -40,11 +16,27 @@ defmodule TreasuryWeb.Pages.StocksLive do
   end
 
   @impl true
+  @doc """
+  Here is an example response you can hardcode to develop against:
+  stock_info:  %Treasury.StockInformation{
+     name: "Vanguard Group, Inc. - Vanguard Total Stock Market ETF",
+     price: Decimal.new("220.28"),
+     symbol: "VTI",
+     expense_ratio_basis_points: Decimal.new("3"),
+     refreshed_on: "1 July 2023 @ 21:35"
+   }
+  """
   def mount(_params, _session, socket) do
     default_assigns = %{
-      symbols: ["VTI"],
+      symbols: Treasury.Stocks.valid_stock_symbols(),
       stock_form: Phoenix.Component.to_form(%{}, as: :select_stock),
-      stock_info: nil
+      stock_info: %Treasury.StockInformation{
+        name: "Vanguard Group, Inc. - Vanguard Total Stock Market ETF",
+        price: Decimal.new("220.28"),
+        symbol: "VTI",
+        expense_ratio_basis_points: Decimal.new("3"),
+        refreshed_on: "1 July 2023 @ 21:35"
+      }
     }
 
     {:ok, assign(socket, default_assigns)}

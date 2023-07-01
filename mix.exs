@@ -52,7 +52,8 @@ defmodule Treasury.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:httpoison, "> 0.0.0"},
       {:mox, "> 0.0.0"},
-      {:timex, "> 0.0.0"}
+      {:timex, "> 0.0.0"},
+      {:data_schema, "> 0.0.0"}
     ]
   end
 
