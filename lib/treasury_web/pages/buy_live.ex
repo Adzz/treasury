@@ -34,6 +34,7 @@ defmodule TreasuryWeb.Pages.BuyLive do
           }
             disabled={!@stock_info}
             type="number"
+            step="0.05"
             label="Amount (USD)"
             field={@buy_stock_form[:amount]}
           />
@@ -103,9 +104,12 @@ defmodule TreasuryWeb.Pages.BuyLive do
   @impl true
   def handle_event("buy_stock", %{"buy_stock" => %{"amount" => amount}}, socket) do
     case Treasury.Stocks.purchase_stock(socket.assigns.stock_info.symbol, amount) do
-      {:ok, info} ->
-        new_assigns = %{}
-        {:noreply, assign(socket, new_assigns)}
+      {:ok, purchase_order} ->
+        new_assigns = %{
+          number_of_stocks: 0
+        }
+
+        {:noreply, assign(socket, new_assigns) |> put_flash(:info, "Successfully placed order")}
 
       {:error, message} ->
         {:noreply, socket |> put_flash(:error, message)}

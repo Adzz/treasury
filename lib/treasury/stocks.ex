@@ -4,6 +4,10 @@ defmodule Treasury.Stocks do
   """
   @root_url "https://treasury.app/api/v1/hiring/symbols/"
   @http Application.compile_env!(:treasury, :http_mod)
+  alias Treasury.Repo
+  alias Treasury.Db.Stock
+  alias Treasury.Db.PurchaseOrder
+  import Ecto.Query
 
   @doc """
   Queries an API for information on a stock symbol.
@@ -26,16 +30,22 @@ defmodule Treasury.Stocks do
 
   @doc """
   Returns a list of valid stock symbols. In real life we could keep and maintain a proper
-  dataset here, but for now this does.
+  dataset here, but for now this does. You can seed it with `mix ecto.setup`
   """
   def valid_stock_symbols() do
-    ["VTI"]
+    Repo.all(from(s in Stock, select: s.symbol))
   end
 
   @doc """
   Actions a purchase order to buy dollar_amount worth of stock in USD.
   """
-  def purchase_stock(_stock_symbol, _dollar_amount) do
-    {:error, "Not implemented"}
+  def purchase_stock(stock_symbol, dollar_amount) do
+    with %{} = stock <- Repo.get_by(Stock, symbol: stock_symbol) do
+      %{stock_id: stock.id, amount: dollar_amount}
+      |> PurchaseOrder.create_changeset()
+      |> Repo.insert()
+    else
+      nil -> {:error, :not_found}
+    end
   end
 end
