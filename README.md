@@ -1,18 +1,23 @@
 # Treasury
 
-To start your Phoenix server:
+## First Time Setup
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+Start docker for mac, then start the DB
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+```sh
+make db_hidden
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Create and seed the DB
 
-## Learn more
+```sh
+mix ecto.setup
+```
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Now start:
+
+```sh
+iex -S mix phx.server
+```
+
+You can see the app on `http://localhost:4000`
