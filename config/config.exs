@@ -20,7 +20,7 @@ config :treasury, TreasuryWeb.Endpoint,
   pubsub_server: Treasury.PubSub,
   live_view: [signing_salt: "MX3ApEjF"]
 
-config(:treasury, http_mod: Treasury.Http)
+config(:treasury, http_mod: Treasury.Http, datetime_mod: Treasury.DateTime)
 
 # Configures the mailer
 #

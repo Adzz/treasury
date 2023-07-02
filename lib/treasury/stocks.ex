@@ -4,6 +4,8 @@ defmodule Treasury.Stocks do
   """
   @root_url "https://treasury.app/api/v1/hiring/symbols/"
   @http Application.compile_env!(:treasury, :http_mod)
+  @datetime Application.compile_env!(:treasury, :datetime_mod)
+
   alias Treasury.Repo
   alias Treasury.Db.Stock
   alias Treasury.Db.PurchaseOrder
@@ -20,7 +22,7 @@ defmodule Treasury.Stocks do
            @http.get(%{url: @root_url <> symbol, headers: headers}),
          {:ok, json} <- Jason.decode(body),
          {:ok, info} <- DataSchema.to_struct(json, Treasury.StockInformation) do
-      now = Timex.format!(DateTime.utc_now(), "{D} {Mfull} {YYYY} @ {h24}:{m}")
+      now = Timex.format!(@datetime.utc_now(), "{D} {Mfull} {YYYY} @ {h24}:{m}")
       {:ok, %{info | refreshed_on: now}}
     else
       {:ok, %{status_code: code}} -> {:error, "unexpected status code #{code}"}
