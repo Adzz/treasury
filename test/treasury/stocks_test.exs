@@ -73,4 +73,27 @@ defmodule Treasury.StocksTest do
                 }}
     end
   end
+
+  describe "purchase_stock/4" do
+    test "Returns an error if the stock can't be found" do
+      assert Stocks.purchase_stock("XXX", 400, 200, Decimal.new("2.50")) == {:error, :not_found}
+    end
+
+    test "Inserts a " do
+      stock = %Treasury.Db.Stock{symbol: "YYY"} |> Repo.insert!()
+
+      Mox.expect(Treasury.DateTimeMock, :utc_now, fn ->
+        ~U[2023-07-02 03:34:22.755919Z]
+      end)
+
+      assert {:ok, %Treasury.Db.PurchaseOrder{} = created} =
+               Stocks.purchase_stock(stock.symbol, 400, 200, Decimal.new("2.50"))
+
+      db_order = Repo.get(Treasury.Db.PurchaseOrder, created.id)
+      assert db_order.amount == Decimal.new("400")
+      assert db_order.share_price == Decimal.new("2.50")
+      assert db_order.number_of_shares == Decimal.new("200")
+      assert db_order.date_of_order == ~U[2023-07-02 03:34:22Z]
+    end
+  end
 end

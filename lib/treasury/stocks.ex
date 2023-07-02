@@ -38,6 +38,9 @@ defmodule Treasury.Stocks do
     Repo.all(from(s in Stock, select: s.symbol))
   end
 
+  @doc """
+  Aggregates information for all of the purchase orders we have made on different stocks.
+  """
   def purchase_orders() do
     from(
       po in PurchaseOrder,
@@ -63,7 +66,7 @@ defmodule Treasury.Stocks do
         amount: dollar_amount,
         number_of_shares: number_of_stocks,
         share_price: price,
-        date_of_order: DateTime.utc_now() |> DateTime.truncate(:millisecond)
+        date_of_order: @datetime.utc_now() |> DateTime.truncate(:millisecond)
       }
       |> PurchaseOrder.create_changeset()
       |> Repo.insert()
