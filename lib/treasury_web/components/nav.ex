@@ -4,16 +4,14 @@ defmodule TreasuryWeb.Components.Nav do
   def nav(assigns) do
     ~H"""
     <nav class={[
-      "flex relative z-20",
-      "xl:flex-row xl:space-x-4",
-      "items-center border-b-2 py-4 w-full bg-slate-900"
+      "border-b-2 py-4 w-full bg-slate-900"
     ]}>
       <ul
         id="expanded_nav_menu"
         class={[
-          "ml-4",
-          "flex flex-row space-x-4 space-y-0 relative top-0 border-b-0",
-          "w-screen space-y-2 bg-slate-900 border-b-2"
+          "ml-4 ",
+          "flex flex-row space-x-4",
+          "w-screen items-center bg-slate-900 "
         ]}
       >
         <.nav_item to={~p"/stocks"} label="Stock Info">
@@ -36,7 +34,7 @@ defmodule TreasuryWeb.Components.Nav do
 
   def nav_item(assigns) do
     ~H"""
-    <li class="hover:md:bg-slate-900 hover:bg-slate-500/50">
+    <li class="hover:text-slate-500/70">
       <.link navigate={@to} class="w-full inline-block">
         <span><%= render_slot(@icon) %></span> <%= @label %>
       </.link>
