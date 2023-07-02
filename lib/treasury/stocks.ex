@@ -36,6 +36,21 @@ defmodule Treasury.Stocks do
     Repo.all(from(s in Stock, select: s.symbol))
   end
 
+  def purchase_orders() do
+    from(
+      po in PurchaseOrder,
+      join: s in assoc(po, :stock),
+      group_by: po.stock_id,
+      select: %{
+        amount: sum(po.amount),
+        stock_id: po.stock_id,
+        symbol: min(s.symbol),
+        stock: sum(po.number_of_shares)
+      }
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Actions a purchase order to buy dollar_amount worth of stock in USD.
   """

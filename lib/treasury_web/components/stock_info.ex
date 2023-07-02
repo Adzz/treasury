@@ -23,9 +23,15 @@ defmodule TreasuryWeb.Components.StockInfo do
         </tr>
         <tr>
           <td class="">Expense Ratio</td>
-          <td class="font-semibold text-emerald-400">
-            <%= @stock_info.expense_ratio_basis_points %> (basis points)
-          </td>
+          <%= if @stock_info.expense_ratio_basis_points do %>
+            <td class="font-semibold text-emerald-400">
+              <%= @stock_info.expense_ratio_basis_points %> (basis points)
+            </td>
+          <% else %>
+            <td class="font-semibold">
+              -
+            </td>
+          <% end %>
         </tr>
       </table>
       <%= if @show_purchase do %>

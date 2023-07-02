@@ -117,12 +117,17 @@ defmodule TreasuryWeb.Pages.BuyLive do
            number_of_stocks,
            stock_info.price
          ) do
-      {:ok, purchase_order} ->
+      {:ok, _purchase_order} ->
         new_assigns = %{
-          number_of_stocks: 0
+          number_of_stocks: 0,
+          stock_info: nil,
+          stock_form: Phoenix.Component.to_form(%{}, as: :stock_symbol)
         }
 
-        {:noreply, assign(socket, new_assigns) |> put_flash(:info, "Successfully placed order")}
+        {:noreply,
+         assign(socket, new_assigns)
+         |> put_flash(:info, "Successfully placed order")
+         |> Phoenix.LiveView.push_patch(to: ~p"/buy")}
 
       {:error, message} when is_binary(message) ->
         {:noreply, socket |> put_flash(:error, message)}

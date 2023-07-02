@@ -14,7 +14,8 @@ defmodule Treasury.StockInformation do
     field: {:name, "name", StringType},
     field: {:price, "price", DecimalType},
     field: {:symbol, "symbol", StringType},
-    field: {:expense_ratio_basis_points, "expense_ratio_basis_points", DecimalType},
+    field:
+      {:expense_ratio_basis_points, "expense_ratio_basis_points", DecimalType, optional?: true},
     # This doesn't come in the response so we add it manually after casting for now.
     field: {:refreshed_on, "", &Treasury.StockInformation.utc_timestamp/1, optional?: true}
   )

@@ -49,8 +49,11 @@ defmodule TreasuryWeb.Pages.StocksLive do
 
           {:noreply, assign(socket, new_assigns)}
 
-        {:error, message} ->
+        {:error, message} when is_binary(message) ->
           {:noreply, socket |> put_flash(:error, message)}
+
+        {:error, message} ->
+          {:noreply, socket |> put_flash(:error, inspect(message))}
       end
     else
       {:noreply, socket |> put_flash(:error, "#{symbol} is not a known stock symbol")}
