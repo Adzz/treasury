@@ -30,13 +30,7 @@ defmodule TreasuryWeb.Pages.StocksLive do
     default_assigns = %{
       symbols: Treasury.Stocks.valid_stock_symbols(),
       stock_form: Phoenix.Component.to_form(%{}, as: :select_stock),
-      stock_info: %Treasury.StockInformation{
-        name: "Vanguard Group, Inc. - Vanguard Total Stock Market ETF",
-        price: Decimal.new("220.28"),
-        symbol: "VTI",
-        expense_ratio_basis_points: Decimal.new("3"),
-        refreshed_on: "1 July 2023 @ 21:35"
-      }
+      stock_info: nil
     }
 
     {:ok, assign(socket, default_assigns)}

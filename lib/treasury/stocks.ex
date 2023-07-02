@@ -39,9 +39,15 @@ defmodule Treasury.Stocks do
   @doc """
   Actions a purchase order to buy dollar_amount worth of stock in USD.
   """
-  def purchase_stock(stock_symbol, dollar_amount) do
+  def purchase_stock(stock_symbol, dollar_amount, number_of_stocks, price) do
     with %{} = stock <- Repo.get_by(Stock, symbol: stock_symbol) do
-      %{stock_id: stock.id, amount: dollar_amount}
+      %{
+        stock_id: stock.id,
+        amount: dollar_amount,
+        number_of_shares: number_of_stocks,
+        share_price: price,
+        date_of_order: DateTime.utc_now() |> DateTime.truncate(:millisecond)
+      }
       |> PurchaseOrder.create_changeset()
       |> Repo.insert()
     else

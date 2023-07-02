@@ -36,7 +36,10 @@ CREATE TABLE public.purchase_orders (
     stock_id bigint NOT NULL,
     amount numeric NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    share_price numeric NOT NULL,
+    date_of_order timestamp(0) without time zone NOT NULL,
+    number_of_shares numeric NOT NULL
 );
 
 
@@ -59,6 +62,27 @@ COMMENT ON COLUMN public.purchase_orders.stock_id IS 'The id of the stock we wis
 --
 
 COMMENT ON COLUMN public.purchase_orders.amount IS 'The USD dollar amount of money the user wishes to spend on the stock';
+
+
+--
+-- Name: COLUMN purchase_orders.share_price; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.purchase_orders.share_price IS 'the USD price of the stock at the time of the purchase order';
+
+
+--
+-- Name: COLUMN purchase_orders.date_of_order; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.purchase_orders.date_of_order IS 'The date the order was placed, may be different from inserted at';
+
+
+--
+-- Name: COLUMN purchase_orders.number_of_shares; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.purchase_orders.number_of_shares IS 'The number of shares given the price at the time of the order and the amount spent.';
 
 
 --
@@ -167,6 +191,13 @@ ALTER TABLE ONLY public.stocks
 
 
 --
+-- Name: stocks_symbol_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX stocks_symbol_index ON public.stocks USING btree (symbol);
+
+
+--
 -- Name: purchase_orders purchase_orders_stock_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -179,3 +210,4 @@ ALTER TABLE ONLY public.purchase_orders
 --
 
 INSERT INTO public."schema_migrations" (version) VALUES (20230701224942);
+INSERT INTO public."schema_migrations" (version) VALUES (20230701230717);

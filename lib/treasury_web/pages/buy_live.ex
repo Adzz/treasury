@@ -103,7 +103,20 @@ defmodule TreasuryWeb.Pages.BuyLive do
 
   @impl true
   def handle_event("buy_stock", %{"buy_stock" => %{"amount" => amount}}, socket) do
-    case Treasury.Stocks.purchase_stock(socket.assigns.stock_info.symbol, amount) do
+    number_of_stocks =
+      amount
+      |> Decimal.new()
+      |> Decimal.div(socket.assigns.stock_info.price)
+      |> Decimal.round(4)
+
+    stock_info = socket.assigns.stock_info
+
+    case Treasury.Stocks.purchase_stock(
+           stock_info.symbol,
+           amount,
+           number_of_stocks,
+           stock_info.price
+         ) do
       {:ok, purchase_order} ->
         new_assigns = %{
           number_of_stocks: 0
@@ -111,8 +124,11 @@ defmodule TreasuryWeb.Pages.BuyLive do
 
         {:noreply, assign(socket, new_assigns) |> put_flash(:info, "Successfully placed order")}
 
-      {:error, message} ->
+      {:error, message} when is_binary(message) ->
         {:noreply, socket |> put_flash(:error, message)}
+
+      {:error, message} ->
+        {:noreply, socket |> put_flash(:error, inspect(message))}
     end
   end
 
